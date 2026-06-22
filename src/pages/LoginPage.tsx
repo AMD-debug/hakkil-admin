@@ -1,12 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { useAuth } from '../hooks/useAuth';
+
+function authErrorMessage(err: unknown): string {
+  const code =
+    typeof err === 'object' && err !== null && 'code' in err
+      ? String((err as { code: unknown }).code)
+      : '';
+  switch (code) {
+    case 'auth/invalid-credential':
+    case 'auth/wrong-password':
+    case 'auth/user-not-found':
+      return 'Email ou mot de passe incorrect (ou compte inexistant).';
+    case 'auth/invalid-email':
+      return 'Adresse email invalide.';
+    case 'auth/too-many-requests':
+      return 'Trop de tentatives. Réessayez plus tard.';
+    case 'auth/operation-not-allowed':
+      return 'Connexion email/mot de passe non activée dans Firebase (Console > Authentication > Sign-in method).';
+    case 'auth/popup-closed-by-user':
+      return 'Fenêtre Google fermée avant la fin de la connexion.';
+    case 'auth/popup-blocked':
+      return 'Le popup Google a été bloqué par le navigateur.';
+    case 'auth/unauthorized-domain':
+      return "Domaine non autorisé dans Firebase Auth (ajoutez 'localhost' dans Authentication > Settings > Authorized domains).";
+    default:
+      return `Erreur de connexion${code ? ` : ${code}` : ''}.`;
+  }
+}
 
 export default function LoginPage() {
+  const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,25 +49,35 @@ export default function LoginPage() {
     setError('');
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch {
-      setError('Email ou mot de passe incorrect');
+    } catch (err) {
+      setError(authErrorMessage(err));
     } finally {
       setLoading(false);
     }
   };
+
+  // Récupère le résultat / les erreurs après le retour de la redirection Google.
+  useEffect(() => {
+    getRedirectResult(auth).catch((err) => setError(authErrorMessage(err)));
+  }, []);
 
   const handleGoogleLogin = async () => {
     setLoading(true);
     setError('');
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch {
-      setError('Erreur de connexion Google');
-    } finally {
+      // Redirection (et non popup) pour éviter les blocages COOP.
+      await signInWithRedirect(auth, provider);
+    } catch (err) {
+      setError(authErrorMessage(err));
       setLoading(false);
     }
   };
+
+  // Déjà connecté → vers le tableau de bord.
+  if (!authLoading && user) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
