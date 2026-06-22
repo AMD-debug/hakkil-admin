@@ -105,9 +105,8 @@ export default function ArticleFormPage() {
     return <p className="text-body">Chargement…</p>;
   }
 
-  const titleErr = errors.title?.[lang]?.message;
-  const excerptErr = errors.excerpt?.[lang]?.message;
-  const contentErr = errors.content?.[lang]?.message;
+  const langHasError = (l: Lang) =>
+    Boolean(errors.title?.[l] || errors.excerpt?.[l] || errors.content?.[l]);
 
   return (
     <div className="max-w-3xl">
@@ -134,38 +133,55 @@ export default function ArticleFormPage() {
               key={l}
               type="button"
               onClick={() => setLang(l)}
-              className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium ${
+              className={`-mb-px flex items-center gap-1.5 border-b-2 px-4 py-2 text-sm font-medium ${
                 lang === l
                   ? 'border-brand text-brand'
                   : 'border-transparent text-gray-500 hover:text-ink'
               }`}
             >
               {l.toUpperCase()}
+              {langHasError(l) && (
+                <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+              )}
             </button>
           ))}
         </div>
 
-        <Field label={`Titre (${lang.toUpperCase()})`} error={titleErr}>
-          <input className={inputClass} {...register(`title.${lang}`)} />
-        </Field>
+        {/* Les deux langues sont montées en permanence (chacune garde sa valeur) ;
+            seule la langue active est visible. */}
+        {(['fr', 'en'] as Lang[]).map((l) => (
+          <div key={l} className={l === lang ? 'space-y-5' : 'hidden'}>
+            <Field
+              label={`Titre (${l.toUpperCase()})`}
+              error={errors.title?.[l]?.message}
+            >
+              <input className={inputClass} {...register(`title.${l}`)} />
+            </Field>
 
-        <Field label={`Extrait (${lang.toUpperCase()})`} error={excerptErr}>
-          <textarea
-            rows={2}
-            className={inputClass}
-            {...register(`excerpt.${lang}`)}
-          />
-        </Field>
+            <Field
+              label={`Extrait (${l.toUpperCase()})`}
+              error={errors.excerpt?.[l]?.message}
+            >
+              <textarea
+                rows={2}
+                className={inputClass}
+                {...register(`excerpt.${l}`)}
+              />
+            </Field>
 
-        <Field label={`Contenu (${lang.toUpperCase()})`} error={contentErr}>
-          <RichTextEditor
-            key={lang}
-            value={getValues(`content.${lang}`)}
-            onChange={(html) =>
-              setValue(`content.${lang}`, html, { shouldValidate: true })
-            }
-          />
-        </Field>
+            <Field
+              label={`Contenu (${l.toUpperCase()})`}
+              error={errors.content?.[l]?.message}
+            >
+              <RichTextEditor
+                value={getValues(`content.${l}`)}
+                onChange={(html) =>
+                  setValue(`content.${l}`, html, { shouldValidate: true })
+                }
+              />
+            </Field>
+          </div>
+        ))}
 
         <hr className="border-gray-100" />
 
