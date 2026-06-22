@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {
   signInWithEmailAndPassword,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
@@ -56,20 +55,17 @@ export default function LoginPage() {
     }
   };
 
-  // Récupère le résultat / les erreurs après le retour de la redirection Google.
-  useEffect(() => {
-    getRedirectResult(auth).catch((err) => setError(authErrorMessage(err)));
-  }, []);
-
   const handleGoogleLogin = async () => {
     setLoading(true);
     setError('');
     try {
       const provider = new GoogleAuthProvider();
-      // Redirection (et non popup) pour éviter les blocages COOP.
-      await signInWithRedirect(auth, provider);
+      // Popup : fiable en dev local (le redirect échoue car le Hosting du
+      // projet n'est pas initialisé). Les avertissements COOP sont bénins.
+      await signInWithPopup(auth, provider);
     } catch (err) {
       setError(authErrorMessage(err));
+    } finally {
       setLoading(false);
     }
   };
