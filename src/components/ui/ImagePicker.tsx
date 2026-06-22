@@ -5,12 +5,23 @@ import { cldThumb } from '../../lib/cloudinary';
 interface Props {
   value: string;
   folder?: string;
+  /** Ratio de recadrage imposé (ex. 1 = carré, 16/9 = bannière). */
+  aspectRatio?: number;
   onChange: (url: string) => void;
 }
 
 /** Sélecteur d'image unique (ex. couverture d'article, photo de membre). */
-export function ImagePicker({ value, folder = 'misc', onChange }: Props) {
-  const { ready, open } = useCloudinaryUpload(folder);
+export function ImagePicker({
+  value,
+  folder = 'misc',
+  aspectRatio,
+  onChange,
+}: Props) {
+  const { ready, open } = useCloudinaryUpload(folder, {
+    cropping: true,
+    aspectRatio,
+    multiple: false,
+  });
 
   if (value) {
     return (

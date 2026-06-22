@@ -195,6 +195,7 @@ export default function ArticleFormPage() {
           <ImagePicker
             value={coverImage}
             folder="articles"
+            aspectRatio={16 / 9}
             onChange={(url) =>
               setValue('coverImage', url, { shouldValidate: true })
             }

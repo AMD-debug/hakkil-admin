@@ -3,12 +3,28 @@ import { CLOUD_NAME, UPLOAD_PRESET } from '../lib/cloudinary';
 
 const SCRIPT_SRC = 'https://upload-widget.cloudinary.com/latest/global/all.js';
 
+interface UploadOptions {
+  /** Active l'étape de recadrage du widget. */
+  cropping?: boolean;
+  /** Ratio imposé au recadrage (ex. 1 = carré, 16/9 = bannière). */
+  aspectRatio?: number;
+  /** Autorise plusieurs fichiers (défaut : true). */
+  multiple?: boolean;
+}
+
 /**
  * Charge (une fois) le script du widget Cloudinary et expose `open()`.
  * Upload NON signé via un upload preset unsigned (plan Spark : pas de backend
  * pour signer). Chaque image uploadée déclenche `onUpload(secure_url)`.
+ *
+ * `cropping` active l'étape de recadrage intégrée du widget : l'image est
+ * stockée déjà recadrée (ce qui apparaîtra sur le site).
  */
-export function useCloudinaryUpload(folder = 'misc') {
+export function useCloudinaryUpload(
+  folder = 'misc',
+  options: UploadOptions = {},
+) {
+  const { cropping = false, aspectRatio, multiple = true } = options;
   const [ready, setReady] = useState<boolean>(
     () => typeof window !== 'undefined' && Boolean(window.cloudinary),
   );
@@ -37,9 +53,17 @@ export function useCloudinaryUpload(folder = 'misc') {
         {
           cloudName: CLOUD_NAME,
           uploadPreset: UPLOAD_PRESET,
-          multiple: true,
+          multiple,
           folder,
           sources: ['local', 'url', 'camera'],
+          ...(cropping
+            ? {
+                cropping: true,
+                croppingAspectRatio: aspectRatio,
+                croppingShowDimensions: true,
+                showSkipCropButton: true,
+              }
+            : {}),
         },
         (error, result) => {
           if (!error && result?.event === 'success') {
@@ -50,7 +74,7 @@ export function useCloudinaryUpload(folder = 'misc') {
       );
       widget.open();
     },
-    [folder],
+    [folder, cropping, aspectRatio, multiple],
   );
 
   return { ready, open };

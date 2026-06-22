@@ -103,6 +103,7 @@ export default function MembreFormPage() {
           <ImagePicker
             value={photo}
             folder="equipe"
+            aspectRatio={1}
             onChange={(url) => setValue('photo', url, { shouldValidate: true })}
           />
         </Field>
