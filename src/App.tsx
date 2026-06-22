@@ -7,6 +7,8 @@ import ServicesListPage from './pages/services/ServicesListPage';
 import ServiceFormPage from './pages/services/ServiceFormPage';
 import RealisationsListPage from './pages/realisations/RealisationsListPage';
 import RealisationFormPage from './pages/realisations/RealisationFormPage';
+import ArticlesListPage from './pages/articles/ArticlesListPage';
+import ArticleFormPage from './pages/articles/ArticleFormPage';
 
 export default function App() {
   return (
@@ -31,6 +33,9 @@ export default function App() {
           path="/realisations/:id/edit"
           element={<RealisationFormPage />}
         />
+        <Route path="/articles" element={<ArticlesListPage />} />
+        <Route path="/articles/new" element={<ArticleFormPage />} />
+        <Route path="/articles/:id/edit" element={<ArticleFormPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>

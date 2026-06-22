@@ -8,3 +8,48 @@
   --color-body: #4a4a4a;
   --color-surface: #f5f5f5;
 }
+
+/* Contenu de l'éditeur TipTap */
+.tiptap {
+  min-height: 12rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  color: var(--color-body);
+}
+.tiptap:focus {
+  outline: none;
+}
+.tiptap p {
+  margin: 0.5rem 0;
+}
+.tiptap h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 1rem 0 0.5rem;
+}
+.tiptap h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0.75rem 0 0.5rem;
+}
+.tiptap ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+.tiptap ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+.tiptap a {
+  color: var(--color-brand);
+  text-decoration: underline;
+}
+.tiptap img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+}
