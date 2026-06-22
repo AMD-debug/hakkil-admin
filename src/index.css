@@ -1,1 +1,10 @@
 @import 'tailwindcss';
+
+/* Identité visuelle Hakkil Digital (cf. docs/cahier-des-charges.md §6) */
+@theme {
+  --color-brand: #e07820;
+  --color-brand-dark: #c4661a;
+  --color-ink: #1a1a1a;
+  --color-body: #4a4a4a;
+  --color-surface: #f5f5f5;
+}
