@@ -6,6 +6,8 @@ interface Props {
   images: string[];
   coverImage: string;
   folder?: string;
+  /** Ratio de recadrage imposé (optionnel : libre par défaut). */
+  aspectRatio?: number;
   onChange: (images: string[], coverImage: string) => void;
 }
 
@@ -13,9 +15,13 @@ export function ImageUploader({
   images,
   coverImage,
   folder = 'misc',
+  aspectRatio,
   onChange,
 }: Props) {
-  const { ready, open } = useCloudinaryUpload(folder);
+  const { ready, open } = useCloudinaryUpload(folder, {
+    cropping: true,
+    aspectRatio,
+  });
 
   function handleAdd() {
     open((url) => {
