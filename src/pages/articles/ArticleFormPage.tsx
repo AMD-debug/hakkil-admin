@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { orderBy } from 'firebase/firestore';
 import { ArrowLeft } from 'lucide-react';
+import { useCollection } from '../../hooks/useCollection';
+import type { Membre } from '../../types/membre';
 import { articleSchema, type ArticleInput } from '../../schemas/article.schema';
 import {
   createArticle,
@@ -53,6 +56,9 @@ export default function ArticleFormPage() {
   });
 
   const coverImage = useWatch({ control, name: 'coverImage' }) ?? '';
+  const { data: members } = useCollection<Membre>('equipe', [
+    orderBy('order', 'asc'),
+  ]);
 
   useEffect(() => {
     if (!id) return;
@@ -197,7 +203,14 @@ export default function ArticleFormPage() {
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Auteur" error={errors.author?.message}>
-            <input className={inputClass} {...register('author')} />
+            <select className={inputClass} {...register('author')}>
+              <option value="">— Choisir —</option>
+              {members.map((m) => (
+                <option key={m.id} value={m.name}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Slug" error={errors.slug?.message}>
             <div className="flex gap-2">

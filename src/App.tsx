@@ -9,6 +9,11 @@ import RealisationsListPage from './pages/realisations/RealisationsListPage';
 import RealisationFormPage from './pages/realisations/RealisationFormPage';
 import ArticlesListPage from './pages/articles/ArticlesListPage';
 import ArticleFormPage from './pages/articles/ArticleFormPage';
+import EquipeListPage from './pages/equipe/EquipeListPage';
+import MembreFormPage from './pages/equipe/MembreFormPage';
+import TemoignagesListPage from './pages/temoignages/TemoignagesListPage';
+import TemoignageFormPage from './pages/temoignages/TemoignageFormPage';
+import MessagesListPage from './pages/messages/MessagesListPage';
 
 export default function App() {
   return (
@@ -36,6 +41,13 @@ export default function App() {
         <Route path="/articles" element={<ArticlesListPage />} />
         <Route path="/articles/new" element={<ArticleFormPage />} />
         <Route path="/articles/:id/edit" element={<ArticleFormPage />} />
+        <Route path="/equipe" element={<EquipeListPage />} />
+        <Route path="/equipe/new" element={<MembreFormPage />} />
+        <Route path="/equipe/:id/edit" element={<MembreFormPage />} />
+        <Route path="/temoignages" element={<TemoignagesListPage />} />
+        <Route path="/temoignages/new" element={<TemoignageFormPage />} />
+        <Route path="/temoignages/:id/edit" element={<TemoignageFormPage />} />
+        <Route path="/messages" element={<MessagesListPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>

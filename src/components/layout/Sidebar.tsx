@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { orderBy } from 'firebase/firestore';
 import {
   LayoutDashboard,
   Wrench,
@@ -9,6 +10,8 @@ import {
   Mail,
   Images,
 } from 'lucide-react';
+import { useCollection } from '../../hooks/useCollection';
+import type { Message } from '../../types/message';
 
 const NAV = [
   { to: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
@@ -22,6 +25,11 @@ const NAV = [
 ];
 
 export function Sidebar() {
+  const { data: messages } = useCollection<Message>('messages', [
+    orderBy('createdAt', 'desc'),
+  ]);
+  const unread = messages.filter((m) => !m.read).length;
+
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center px-6">
@@ -43,7 +51,12 @@ export function Sidebar() {
             }
           >
             <Icon size={18} />
-            {label}
+            <span className="flex-1">{label}</span>
+            {to === '/messages' && unread > 0 && (
+              <span className="rounded-full bg-brand px-2 py-0.5 text-xs font-semibold text-white">
+                {unread}
+              </span>
+            )}
           </NavLink>
         ))}
       </nav>
