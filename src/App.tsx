@@ -5,6 +5,8 @@ import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import ServicesListPage from './pages/services/ServicesListPage';
 import ServiceFormPage from './pages/services/ServiceFormPage';
+import RealisationsListPage from './pages/realisations/RealisationsListPage';
+import RealisationFormPage from './pages/realisations/RealisationFormPage';
 
 export default function App() {
   return (
@@ -23,6 +25,12 @@ export default function App() {
         <Route path="/services" element={<ServicesListPage />} />
         <Route path="/services/new" element={<ServiceFormPage />} />
         <Route path="/services/:id/edit" element={<ServiceFormPage />} />
+        <Route path="/realisations" element={<RealisationsListPage />} />
+        <Route path="/realisations/new" element={<RealisationFormPage />} />
+        <Route
+          path="/realisations/:id/edit"
+          element={<RealisationFormPage />}
+        />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>

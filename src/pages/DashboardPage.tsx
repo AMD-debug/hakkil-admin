@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
 import { orderBy } from 'firebase/firestore';
-import { Wrench } from 'lucide-react';
+import { Wrench, FolderKanban } from 'lucide-react';
 import { useCollection } from '../hooks/useCollection';
 import type { Service } from '../types/service';
+import type { Realisation } from '../types/realisation';
 
 export default function DashboardPage() {
   const { data: services } = useCollection<Service>('services', [
     orderBy('order', 'asc'),
+  ]);
+  const { data: realisations } = useCollection<Realisation>('realisations', [
+    orderBy('createdAt', 'desc'),
   ]);
 
   return (
@@ -28,6 +32,23 @@ export default function DashboardPage() {
             <div>
               <p className="text-2xl font-bold text-ink">{services.length}</p>
               <p className="text-sm text-body">Services</p>
+            </div>
+          </div>
+        </Link>
+
+        <Link
+          to="/realisations"
+          className="rounded-2xl border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
+              <FolderKanban size={20} />
+            </span>
+            <div>
+              <p className="text-2xl font-bold text-ink">
+                {realisations.length}
+              </p>
+              <p className="text-sm text-body">Réalisations</p>
             </div>
           </div>
         </Link>
