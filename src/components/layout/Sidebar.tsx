@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { orderBy } from 'firebase/firestore';
 import {
   LayoutDashboard,
   Wrench,
@@ -8,20 +9,37 @@ import {
   MessageSquareQuote,
   Mail,
   Images,
+  Package,
+  Handshake,
+  HelpCircle,
+  Send,
+  Settings,
 } from 'lucide-react';
+import { useCollection } from '../../hooks/useCollection';
+import type { Message } from '../../types/message';
 
 const NAV = [
   { to: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
   { to: '/services', label: 'Services', icon: Wrench },
+  { to: '/offres', label: 'Offres', icon: Package },
   { to: '/realisations', label: 'Réalisations', icon: FolderKanban },
   { to: '/articles', label: 'Articles', icon: Newspaper },
   { to: '/equipe', label: 'Équipe', icon: Users },
   { to: '/temoignages', label: 'Témoignages', icon: MessageSquareQuote },
+  { to: '/partenaires', label: 'Partenaires', icon: Handshake },
+  { to: '/faq', label: 'FAQ', icon: HelpCircle },
   { to: '/messages', label: 'Messages', icon: Mail },
+  { to: '/newsletter', label: 'Newsletter', icon: Send },
+  { to: '/parametres', label: 'Paramètres', icon: Settings },
   { to: '/medias', label: 'Médias', icon: Images },
 ];
 
 export function Sidebar() {
+  const { data: messages } = useCollection<Message>('messages', [
+    orderBy('createdAt', 'desc'),
+  ]);
+  const unread = messages.filter((m) => !m.read).length;
+
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center px-6">
@@ -43,7 +61,12 @@ export function Sidebar() {
             }
           >
             <Icon size={18} />
-            {label}
+            <span className="flex-1">{label}</span>
+            {to === '/messages' && unread > 0 && (
+              <span className="rounded-full bg-brand px-2 py-0.5 text-xs font-semibold text-white">
+                {unread}
+              </span>
+            )}
           </NavLink>
         ))}
       </nav>
