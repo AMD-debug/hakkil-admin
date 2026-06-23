@@ -42,10 +42,9 @@ export function Sidebar() {
 
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-gray-200 bg-white">
-      <div className="flex h-16 items-center px-6">
-        <span className="text-lg font-bold text-ink">
-          Hakkil <span className="text-brand">Admin</span>
-        </span>
+      <div className="flex h-16 items-center gap-2 px-6">
+        <img src="/logo.png" alt="Hakkil Digital" className="h-7 w-auto" />
+        <span className="text-sm font-semibold text-body">Admin</span>
       </div>
       <nav className="flex-1 space-y-1 px-3 py-2">
         {NAV.map(({ to, label, icon: Icon }) => (

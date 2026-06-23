@@ -78,9 +78,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Hakkil Digital</h1>
-          <p className="text-gray-500 mt-1">Administration</p>
+        <div className="mb-8 flex flex-col items-center">
+          <img src="/logo.png" alt="Hakkil Digital" className="h-12 w-auto" />
+          <p className="mt-3 text-gray-500">Administration</p>
         </div>
 
         {error && (
