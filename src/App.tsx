@@ -16,6 +16,11 @@ import TemoignageFormPage from './pages/temoignages/TemoignageFormPage';
 import MessagesListPage from './pages/messages/MessagesListPage';
 import OffresListPage from './pages/offres/OffresListPage';
 import OffreFormPage from './pages/offres/OffreFormPage';
+import PartenairesListPage from './pages/partenaires/PartenairesListPage';
+import PartenaireFormPage from './pages/partenaires/PartenaireFormPage';
+import FaqListPage from './pages/faq/FaqListPage';
+import FaqFormPage from './pages/faq/FaqFormPage';
+import NewsletterListPage from './pages/newsletter/NewsletterListPage';
 
 export default function App() {
   return (
@@ -53,6 +58,13 @@ export default function App() {
         <Route path="/offres" element={<OffresListPage />} />
         <Route path="/offres/new" element={<OffreFormPage />} />
         <Route path="/offres/:id/edit" element={<OffreFormPage />} />
+        <Route path="/partenaires" element={<PartenairesListPage />} />
+        <Route path="/partenaires/new" element={<PartenaireFormPage />} />
+        <Route path="/partenaires/:id/edit" element={<PartenaireFormPage />} />
+        <Route path="/faq" element={<FaqListPage />} />
+        <Route path="/faq/new" element={<FaqFormPage />} />
+        <Route path="/faq/:id/edit" element={<FaqFormPage />} />
+        <Route path="/newsletter" element={<NewsletterListPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>

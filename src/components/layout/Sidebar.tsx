@@ -10,6 +10,9 @@ import {
   Mail,
   Images,
   Package,
+  Handshake,
+  HelpCircle,
+  Send,
 } from 'lucide-react';
 import { useCollection } from '../../hooks/useCollection';
 import type { Message } from '../../types/message';
@@ -22,7 +25,10 @@ const NAV = [
   { to: '/articles', label: 'Articles', icon: Newspaper },
   { to: '/equipe', label: 'Équipe', icon: Users },
   { to: '/temoignages', label: 'Témoignages', icon: MessageSquareQuote },
+  { to: '/partenaires', label: 'Partenaires', icon: Handshake },
+  { to: '/faq', label: 'FAQ', icon: HelpCircle },
   { to: '/messages', label: 'Messages', icon: Mail },
+  { to: '/newsletter', label: 'Newsletter', icon: Send },
   { to: '/medias', label: 'Médias', icon: Images },
 ];
 
