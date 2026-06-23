@@ -9,6 +9,7 @@ import {
   MessageSquareQuote,
   Mail,
   Images,
+  Package,
 } from 'lucide-react';
 import { useCollection } from '../../hooks/useCollection';
 import type { Message } from '../../types/message';
@@ -16,6 +17,7 @@ import type { Message } from '../../types/message';
 const NAV = [
   { to: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
   { to: '/services', label: 'Services', icon: Wrench },
+  { to: '/offres', label: 'Offres', icon: Package },
   { to: '/realisations', label: 'Réalisations', icon: FolderKanban },
   { to: '/articles', label: 'Articles', icon: Newspaper },
   { to: '/equipe', label: 'Équipe', icon: Users },

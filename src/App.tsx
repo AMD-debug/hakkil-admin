@@ -14,6 +14,8 @@ import MembreFormPage from './pages/equipe/MembreFormPage';
 import TemoignagesListPage from './pages/temoignages/TemoignagesListPage';
 import TemoignageFormPage from './pages/temoignages/TemoignageFormPage';
 import MessagesListPage from './pages/messages/MessagesListPage';
+import OffresListPage from './pages/offres/OffresListPage';
+import OffreFormPage from './pages/offres/OffreFormPage';
 
 export default function App() {
   return (
@@ -48,6 +50,9 @@ export default function App() {
         <Route path="/temoignages/new" element={<TemoignageFormPage />} />
         <Route path="/temoignages/:id/edit" element={<TemoignageFormPage />} />
         <Route path="/messages" element={<MessagesListPage />} />
+        <Route path="/offres" element={<OffresListPage />} />
+        <Route path="/offres/new" element={<OffreFormPage />} />
+        <Route path="/offres/:id/edit" element={<OffreFormPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>

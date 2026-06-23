@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { orderBy } from 'firebase/firestore';
 import {
   Wrench,
+  Package,
   FolderKanban,
   Newspaper,
   Users,
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useCollection } from '../hooks/useCollection';
 import type { Service } from '../types/service';
+import type { Offre } from '../types/offre';
 import type { Realisation } from '../types/realisation';
 import type { Article } from '../types/article';
 import type { Membre } from '../types/membre';
@@ -51,6 +53,9 @@ export default function DashboardPage() {
   const { data: services } = useCollection<Service>('services', [
     orderBy('order', 'asc'),
   ]);
+  const { data: offres } = useCollection<Offre>('offres', [
+    orderBy('order', 'asc'),
+  ]);
   const { data: realisations } = useCollection<Realisation>(
     'realisations',
     byDate,
@@ -79,6 +84,12 @@ export default function DashboardPage() {
           icon={Wrench}
           count={services.length}
           label="Services"
+        />
+        <StatCard
+          to="/offres"
+          icon={Package}
+          count={offres.length}
+          label="Offres / Packs"
         />
         <StatCard
           to="/realisations"
