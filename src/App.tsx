@@ -21,6 +21,7 @@ import PartenaireFormPage from './pages/partenaires/PartenaireFormPage';
 import FaqListPage from './pages/faq/FaqListPage';
 import FaqFormPage from './pages/faq/FaqFormPage';
 import NewsletterListPage from './pages/newsletter/NewsletterListPage';
+import SettingsPage from './pages/settings/SettingsPage';
 
 export default function App() {
   return (
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="/faq/new" element={<FaqFormPage />} />
         <Route path="/faq/:id/edit" element={<FaqFormPage />} />
         <Route path="/newsletter" element={<NewsletterListPage />} />
+        <Route path="/parametres" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Route>
     </Routes>

@@ -13,6 +13,7 @@ import {
   Handshake,
   HelpCircle,
   Send,
+  Settings,
 } from 'lucide-react';
 import { useCollection } from '../../hooks/useCollection';
 import type { Message } from '../../types/message';
@@ -29,6 +30,7 @@ const NAV = [
   { to: '/faq', label: 'FAQ', icon: HelpCircle },
   { to: '/messages', label: 'Messages', icon: Mail },
   { to: '/newsletter', label: 'Newsletter', icon: Send },
+  { to: '/parametres', label: 'Paramètres', icon: Settings },
   { to: '/medias', label: 'Médias', icon: Images },
 ];
 

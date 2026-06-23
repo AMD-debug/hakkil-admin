@@ -57,6 +57,7 @@ export default function OffresListPage() {
           <thead className="border-b border-gray-200 bg-gray-50 text-gray-500">
             <tr>
               <th className="px-4 py-3 font-medium">Pack (FR)</th>
+              <th className="px-4 py-3 font-medium">Domaine</th>
               <th className="px-4 py-3 font-medium">Prix</th>
               <th className="px-4 py-3 font-medium">Ordre</th>
               <th className="px-4 py-3 font-medium">Statut</th>
@@ -66,14 +67,14 @@ export default function OffresListPage() {
           <tbody className="divide-y divide-gray-100">
             {loading && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-body">
+                <td colSpan={6} className="px-4 py-8 text-center text-body">
                   Chargement…
                 </td>
               </tr>
             )}
             {!loading && offres.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-body">
+                <td colSpan={6} className="px-4 py-8 text-center text-body">
                   Aucune offre.
                 </td>
               </tr>
@@ -88,6 +89,7 @@ export default function OffresListPage() {
                     {o.title.fr}
                   </span>
                 </td>
+                <td className="px-4 py-3 text-body">{o.category}</td>
                 <td className="px-4 py-3 text-body">{o.price}</td>
                 <td className="px-4 py-3 text-body">{o.order}</td>
                 <td className="px-4 py-3">

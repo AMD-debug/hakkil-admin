@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { offreSchema, type OffreInput } from '../../schemas/offre.schema';
 import { createOffre, getOffre, updateOffre } from '../../lib/firestore/offres';
+import { slugify } from '../../lib/slug';
 import { Button } from '../../components/ui/Button';
 import { Field, inputClass } from '../../components/ui/Field';
+import { ImageUploader } from '../../components/ui/ImageUploader';
 import { useToast } from '../../components/ui/toast-context';
 
 const EMPTY: OffreInput = {
   title: { fr: '', en: '' },
   description: { fr: '', en: '' },
+  longDescription: { fr: '', en: '' },
+  category: '',
+  slug: '',
   price: '',
   features: { fr: [], en: [] },
+  images: [],
   highlighted: false,
   order: 0,
   published: false,
@@ -40,11 +46,15 @@ export default function OffreFormPage() {
     handleSubmit,
     reset,
     setValue,
+    getValues,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<OffreInput>({
     resolver: zodResolver(offreSchema),
     defaultValues: EMPTY,
   });
+
+  const images = useWatch({ control, name: 'images' }) ?? [];
 
   useEffect(() => {
     if (!id) return;
@@ -78,9 +88,11 @@ export default function OffreFormPage() {
     }
   }
 
-  if (loading) {
-    return <p className="text-body">Chargement…</p>;
+  function generateSlug() {
+    setValue('slug', slugify(getValues('title.fr')), { shouldValidate: true });
   }
+
+  if (loading) return <p className="text-body">Chargement…</p>;
 
   return (
     <div className="max-w-3xl">
@@ -118,11 +130,57 @@ export default function OffreFormPage() {
           </Field>
         </div>
 
-        <Field
-          label="Prix (ex. « 500 000 GNF » ou « Sur devis »)"
-          error={errors.price?.message}
-        >
-          <input className={inputClass} {...register('price')} />
+        <div className="grid gap-5 sm:grid-cols-3">
+          <Field label="Domaine / catégorie" error={errors.category?.message}>
+            <input
+              className={inputClass}
+              placeholder="Web, Marketing, Design…"
+              {...register('category')}
+            />
+          </Field>
+          <Field label="Prix" error={errors.price?.message}>
+            <input
+              className={inputClass}
+              placeholder="500 000 GNF / Sur devis"
+              {...register('price')}
+            />
+          </Field>
+          <Field label="Slug" error={errors.slug?.message}>
+            <div className="flex gap-2">
+              <input className={inputClass} {...register('slug')} />
+              <Button type="button" variant="secondary" onClick={generateSlug}>
+                Générer
+              </Button>
+            </div>
+          </Field>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Description longue (FR) — page détail">
+            <textarea
+              rows={4}
+              className={inputClass}
+              {...register('longDescription.fr')}
+            />
+          </Field>
+          <Field label="Description longue (EN) — page détail">
+            <textarea
+              rows={4}
+              className={inputClass}
+              {...register('longDescription.en')}
+            />
+          </Field>
+        </div>
+
+        <Field label="Visuels (landing)">
+          <ImageUploader
+            images={images}
+            coverImage={images[0] ?? ''}
+            folder="offres"
+            onChange={(imgs) =>
+              setValue('images', imgs, { shouldValidate: true })
+            }
+          />
         </Field>
 
         <div className="grid gap-5 sm:grid-cols-2">
