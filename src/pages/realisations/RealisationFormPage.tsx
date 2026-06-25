@@ -16,6 +16,7 @@ import { slugify } from '../../lib/slug';
 import { Button } from '../../components/ui/Button';
 import { Field, inputClass } from '../../components/ui/Field';
 import { ImageUploader } from '../../components/ui/ImageUploader';
+import { RichTextEditor } from '../../components/ui/RichTextEditor';
 import { useToast } from '../../components/ui/toast-context';
 
 const EMPTY: RealisationInput = {
@@ -145,28 +146,22 @@ export default function RealisationFormPage() {
           </Field>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field
-            label="Description (FR)"
-            error={errors.description?.fr?.message}
-          >
-            <textarea
-              rows={3}
-              className={inputClass}
-              {...register('description.fr')}
-            />
-          </Field>
-          <Field
-            label="Description (EN)"
-            error={errors.description?.en?.message}
-          >
-            <textarea
-              rows={3}
-              className={inputClass}
-              {...register('description.en')}
-            />
-          </Field>
-        </div>
+        <Field label="Description (FR)" error={errors.description?.fr?.message}>
+          <RichTextEditor
+            value={getValues('description.fr')}
+            onChange={(html) =>
+              setValue('description.fr', html, { shouldValidate: true })
+            }
+          />
+        </Field>
+        <Field label="Description (EN)" error={errors.description?.en?.message}>
+          <RichTextEditor
+            value={getValues('description.en')}
+            onChange={(html) =>
+              setValue('description.en', html, { shouldValidate: true })
+            }
+          />
+        </Field>
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Catégorie" error={errors.category?.message}>
